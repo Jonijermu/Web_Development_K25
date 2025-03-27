@@ -706,30 +706,88 @@ const restaurants = [{
 
 // your code here
 
-function createMap() {
-  var map = L.map('map').setView([60.186776, 24.822108], 12);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map);
-  return map;
+function sortRestaurants() {
+  restaurants.sort((a, b) => {
+    if (a.name.toUpperCase() < b.name.toUpperCase()) {
+      return -1;
+    }
+    if (a.name.toUpperCase() > b.name.toUpperCase()) {
+      return 1;
+    }
+    return 0;
+  });
+  createTableCells();
 }
 
-function restaurantMarker(lat, lon, name, address, map) {
-  var marker = L.marker([lat, lon]).addTo(map);
-  marker.bindPopup(`<h3>${name}</h3>
-<p>${address}</p>`).openPopup();
-}
+function createTableCells() {
 
-function getRestaurantsLatLon() {
-  var map = createMap(); // Initialize the map once
+  const table = document.querySelector('table');
   for (let rest of restaurants) {
-    const lat = rest.location.coordinates[1];
-    const lon = rest.location.coordinates[0];
-    const name = rest.name;
-    const address = rest.address
-    restaurantMarker(lat, lon, name, address, map);
+    const tr = document.createElement("tr");
+
+    const nameTd = document.createElement("td");
+    nameTd.innerText = rest.name;
+
+    const addressTd = document.createElement("td");
+    addressTd.innerText = rest.address;
+
+    tr.append(nameTd, addressTd);
+    table.append(tr);
+
+    tr.addEventListener('click', () => {
+      for (const elem of document.querySelectorAll('.highlight')) {
+        elem.classList.remove('highlight');
+      }
+      tr.classList.toggle('highlight');
+      modalElements(rest);
+
+    });
   }
 }
 
-getRestaurantsLatLon();
+function modalElements(rest) {
+  const modal = document.querySelector('dialog');
+  const h2 = document.createElement('h2');
+  h2.innerText = rest.name;
+  const address = document.createElement('p');
+  address.innerText = rest.address;
+  const postalCode = document.createElement('p');
+  postalCode.innerText = rest.postalCode;
+  const city = document.createElement('p');
+  city.innerText = rest.city;
+  const phoneNumber = document.createElement('p');
+  phoneNumber.innerText = rest.phone;
+  const company = document.createElement('p');
+  company.innerText = rest.company;
+
+  modal.innerHTML = '';
+  modal.append(h2, address, postalCode, city, phoneNumber, company);
+  modal.showModal();
+
+}
+
+sortRestaurants();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

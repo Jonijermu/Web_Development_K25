@@ -27,17 +27,33 @@ const todoList = [
   },
 ];
 
+// add your code here
+
 function addTodoContent() {
   const ul = document.querySelector('ul');
+  ul.innerHTML = '';
   for (let todo of todoList) {
     const listHTML = `
       <li>
-      <input type="checkbox" id="todo-${todo.id}" ${todo.completed ? 'checked' : ''} >
+      <input type="checkbox" id="todo-${todo.id}"${todo.completed ? 'checked' : ''} >
     <label for="todo-${todo.id}">${todo.task}</label>
       </li>
     `;
     ul.insertAdjacentHTML('beforeend', listHTML);
   }
 }
+
+document.addEventListener("submit", function () {
+
+});
+
+
+function buttonEvent() {
+  const addButton = document.querySelector('#add-btn')
+  addButton.addEventListener('click', function () {
+  });
+
+}
+
 
 addTodoContent();
