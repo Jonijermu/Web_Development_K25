@@ -1,4 +1,4 @@
-// array for todo list
+// array for todolist
 const todoList = [
   {
     id: 1,
@@ -28,32 +28,73 @@ const todoList = [
 ];
 
 // add your code here
+const ul = document.querySelector('ul');
 
 function addTodoContent() {
-  const ul = document.querySelector('ul');
-  ul.innerHTML = '';
   for (let todo of todoList) {
-    const listHTML = `
-      <li>
-      <input type="checkbox" id="todo-${todo.id}"${todo.completed ? 'checked' : ''} >
-    <label for="todo-${todo.id}">${todo.task}</label>
-      </li>
-    `;
-    ul.insertAdjacentHTML('beforeend', listHTML);
+    console.log(todo)
+    const li = document.createElement('li');
+    const checkBox = document.createElement('input');
+    const delButton = document.createElement('button');
+    delButton.textContent = 'Del';
+
+    checkBox.type = 'checkbox';
+    checkBox.id = 'todo-' + todo.id;
+    checkBox.checked = todo.completed;
+
+    delButton.addEventListener('click', () => {
+      deleteItem(todo);
+      ul.removeChild(li);
+    });
+    const label = document.createElement('label');
+    label.setAttribute('for', checkBox.id);
+    label.textContent = todo.task
+    li.appendChild(checkBox);
+    li.appendChild(label);
+    li.appendChild(delButton);
+    ul.appendChild(li);
+
+    checkBox.addEventListener('click', () => {
+      todo.completed = checkBox.checked;
+      console.log(todoList)
+    });
   }
 }
 
-document.addEventListener("submit", function () {
-
-});
-
-
-function buttonEvent() {
-  const addButton = document.querySelector('#add-btn')
-  addButton.addEventListener('click', function () {
-  });
-
+function deleteItem(todo) {
+  const index = todoList.findIndex(item => item.id === todo.id);
+  todoList.splice(index, 1);
+  console.log(todoList);
 }
 
+const button = document.querySelector('.add-btn');
+const modal = document.querySelector('dialog');
+
+button.addEventListener('click', () => {
+  addTodoItem();
+});
+
+const form = modal.querySelector('form');
+const input = modal.querySelector('input');
+
+
+function addTodoItem() {
+  modal.showModal();
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const todo = input.value;
+    if (todo) {
+      todoList.push({
+        id: todoList.length + 1,
+        task: todo,
+        completed: false
+      });
+      input.value = '';
+      ul.innerHTML ='';
+      modal.close();
+      addTodoContent();
+    }
+  });
+}
 
 addTodoContent();
