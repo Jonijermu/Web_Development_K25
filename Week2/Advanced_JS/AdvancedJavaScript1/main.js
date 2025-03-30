@@ -43,7 +43,6 @@ const createTableCells = (restaurants) => {
           elem.classList.remove('highlight');
         }
         row.classList.add('highlight');
-
         const coursesResponse = await getDailyMenu(restaurant._id, 'fi');
         modal.innerHTML = restaurantModal(restaurant, coursesResponse)
         modal.showModal();
@@ -54,7 +53,7 @@ const createTableCells = (restaurants) => {
   });
 }
 
-const  main  = async()  =>{
+const main = async () => {
   try {
     await getRestaurants();
     sortRestaurants();

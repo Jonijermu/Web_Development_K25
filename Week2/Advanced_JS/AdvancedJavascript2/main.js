@@ -31,9 +31,14 @@ const sortRestaurants = () => {
   );
 }
 
+const filterRestaurants = (restaurants) => {
+  return restaurants.filter(sodexo => sodexo.company === 'Sodexo')
+}
+
 
 const createTableCells = () => {
-  restaurants.forEach(restaurant => {
+  const sodexoRestaurants = filterRestaurants(restaurants);
+  sodexoRestaurants.forEach(restaurant => {
     const row = restaurantRow(restaurant)
     table.append(row);
     row.addEventListener('click', async function () {
